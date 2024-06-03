@@ -1,6 +1,7 @@
 package di
 
 import (
+	"restfulapi-books/apps/books"
 	"restfulapi-books/apps/utils"
 	"restfulapi-books/config"
 	"restfulapi-books/server"
@@ -17,6 +18,10 @@ func BuildContainer(env string) *dig.Container {
 
 	container.Provide(config.InitDatabase)
 	container.Provide(utils.InitLogger)
+
+	container.Provide(books.NewBookRepository)
+	container.Provide(books.NewBookService)
+	container.Provide(books.NewBookHandler)
 
 	container.Provide(server.NewAPIServer)
 
