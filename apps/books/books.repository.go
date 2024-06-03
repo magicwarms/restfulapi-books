@@ -15,9 +15,9 @@ type bookRepository struct {
 
 // NewRepo is the single instance repo that is being created.
 func NewBookRepository(gormDB *gorm.DB) *bookRepository {
-	// gormDB.AutoMigrate(
-	// 	&model.BookModel{},
-	// )
+	gormDB.AutoMigrate(
+		&model.BookModel{},
+	)
 	return &bookRepository{
 		db: gormDB,
 	}
