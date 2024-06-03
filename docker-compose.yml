@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  postgresql-db:
+    build:
+      context: ./db
+    restart: unless-stopped
+    container_name: postgres-db-books
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nkyVdeMfJGTayFRDVCaacSjefRtURy
+      POSTGRES_DB: books_db
+    ports:
+      - "1234:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgres
+    networks:
+      - books-network
+
+  books-assessment-app-be:
+    container_name: books-assessment-app-be
+    build: .
+    ports:
+      - "9005:9005"
+    depends_on:
+      - postgresql-db
+    networks:
+      - books-network
+    tty: true
+    restart: on-failure
+  
+networks:
+  books-network:
+    driver: bridge
+
+    
+  
