@@ -49,6 +49,7 @@ func (srv *bookService) CreateBook(ctx echo.Context, book *entity.AddBookequestD
 
 	newBook, errGetBook := srv.FetchBookByID(ctx, bookID)
 	if errGetBook != nil {
+		srv.logger.Error(ctx, "failed to get all books", utils.Fields{"error": errGetBook.Error()})
 		return &model.BookModel{}, errGetBook
 	}
 
@@ -71,11 +72,13 @@ func (srv *bookService) FetchAllBooks(ctx echo.Context, book *entity.GetAllBookR
 
 	books, errBooks := srv.bookRepo.GetAllBooks(book)
 	if errBooks != nil {
+		srv.logger.Error(ctx, "failed to get all books", utils.Fields{"error": errBooks.Error()})
 		return &entity.BookResponse{}, errBooks
 	}
 
-	totalBook, errTotalBook := srv.bookRepo.CountBooks()
+	totalBook, errTotalBook := srv.bookRepo.CountBooks(book)
 	if errTotalBook != nil {
+		srv.logger.Error(ctx, "failed to get total books", utils.Fields{"error": errTotalBook.Error()})
 		return &entity.BookResponse{}, errTotalBook
 	}
 
@@ -109,5 +112,14 @@ func (srv *bookService) ModifyBook(ctx echo.Context, book *entity.UpdateBookeque
 		return errModify
 	}
 
+	return nil
+}
+
+func (srv *bookService) DeleteBook(ctx echo.Context, book *entity.FindBookequestDTO) error {
+	result := srv.bookRepo.DeleteBook(book.ID)
+	if result != nil {
+		srv.logger.Error(ctx, "failed to delete book", utils.Fields{"error": result.Error})
+		return result
+	}
 	return nil
 }

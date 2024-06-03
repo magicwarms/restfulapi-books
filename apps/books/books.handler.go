@@ -111,3 +111,27 @@ func (book *BookHandler) UpdateBook(ctx echo.Context) error {
 
 	return utils.AppResponse(ctx, http.StatusOK, classData)
 }
+
+func (book *BookHandler) DeleteBook(ctx echo.Context) error {
+	request := new(entity.FindBookequestDTO)
+	if err := ctx.Bind(request); err != nil {
+		return utils.AppResponse(ctx, http.StatusBadRequest, err)
+	}
+	// Load into separate struct for security
+	bookDTO := &entity.FindBookequestDTO{
+		ID: request.ID,
+	}
+
+	validationErr := utils.ValidateFields(*bookDTO)
+	if validationErr != nil {
+		return utils.AppResponse(ctx, http.StatusUnprocessableEntity, validationErr.Message)
+	}
+
+	classData := book.bookService.DeleteBook(ctx, bookDTO)
+
+	if classData != nil && classData.Error() != "" {
+		return utils.AppResponse(ctx, http.StatusInternalServerError, classData.Error())
+	}
+
+	return utils.AppResponse(ctx, http.StatusOK, classData)
+}

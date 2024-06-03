@@ -68,7 +68,7 @@ func NewAPIServer(
 	bookRoute.POST("/store", bookHandler.AddBook)
 	bookRoute.GET("/all", bookHandler.GetAllBooks)
 	bookRoute.PUT("/update", bookHandler.UpdateBook)
-	// accountRoute.GET("/check", accountHandler.CheckTransactionStatus)
+	bookRoute.DELETE("/delete", bookHandler.DeleteBook)
 
 	return &APIServer{
 		httpServer: &http.Server{

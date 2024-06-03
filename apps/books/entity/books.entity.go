@@ -33,3 +33,7 @@ type GetAllBookRequestDTO struct {
 	SearchBy      string
 	SearchKeyword string
 }
+
+type FindBookequestDTO struct {
+	ID uint `json:"id" validate:"required,number"`
+}

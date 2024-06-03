@@ -49,9 +49,6 @@ func (bookRepo *bookRepository) UpdateBook(book *model.BookModel) error {
 }
 
 func (bookRepo *bookRepository) DeleteBook(bookID uint) error {
-	isPublished := false
-	bookRepo.UpdateBook(&model.BookModel{ID: bookID, IsPublished: &isPublished})
-
 	result := bookRepo.db.Where("id = ?", bookID).Delete(&model.BookModel{})
 	if result.Error != nil {
 		return result.Error
@@ -88,9 +85,25 @@ func (bookRepo *bookRepository) GetAllBooks(book *entity.GetAllBookRequestDTO) (
 	return books, nil
 }
 
-func (bookRepo *bookRepository) CountBooks() (int, error) {
+func (bookRepo *bookRepository) CountBooks(book *entity.GetAllBookRequestDTO) (int, error) {
 	var totalBook int64
-	result := bookRepo.db.Model(&model.BookModel{}).Count(&totalBook)
+	result := bookRepo.db.Model(&model.BookModel{})
+
+	if book.SearchBy == string(constants.SEARCH_BY_AUTHOR) && book.SearchKeyword != "" {
+		result = result.InnerJoins("Author", bookRepo.db.Where("name ILIKE ?", "%"+book.SearchKeyword+"%"))
+	} else {
+		result = result.InnerJoins("Author")
+	}
+
+	if book.SearchBy == string(constants.SEARCH_BY_ISBN) && book.SearchKeyword != "" {
+		result = result.Where("isbn ILIKE ?", "%"+book.SearchKeyword+"%")
+	}
+
+	if book.SearchBy == string(constants.SEARCH_BY_TITLE) && book.SearchKeyword != "" {
+		result = result.Where("title ILIKE ?", "%"+book.SearchKeyword+"%")
+	}
+
+	result = result.Count(&totalBook)
 	if result.Error != nil {
 		return 0, result.Error
 	}
