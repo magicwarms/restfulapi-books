@@ -32,6 +32,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/labstack/echo/v4 v4.12.0
+	go.uber.org/dig v1.17.1
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
