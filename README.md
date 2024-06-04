@@ -253,7 +253,7 @@ Method: PUT
 
 URL: http://localhost:9005/api/v1/authors/update
 
-This endpoint allows the user to update the details of a book.
+This endpoint allows the user to update the details of a author.
 #### Request Body
 - id (number): The unique identifier of the author.
 - name (string): The updated name of the author.
