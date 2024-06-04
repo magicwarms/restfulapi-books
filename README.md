@@ -1,7 +1,7 @@
 # Assessment
 
 ## Overview
-This project serves as an assessment for the role of Backend Engineer at Mr. Cornellius.
+This project serves as an assessment for the role of Backend Engineer for Mr. Cornellius.
 
 ## Installation & Running
 ### Build 
