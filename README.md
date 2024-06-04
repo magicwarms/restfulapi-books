@@ -121,7 +121,7 @@ This endpoint makes an HTTP GET request to retrieve a list of books based on the
 #### Query Parameters
 - page (integer) - page number
 - perPage (integer) - total data per page
-- searchBy (string) - search criteria
+- searchBy (string) - search criteria (author, isbn, title)
 - searchKeyword (string) - search keyword
 
 #### Response:
