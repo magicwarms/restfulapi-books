@@ -167,6 +167,7 @@ This endpoint makes an HTTP GET request to retrieve a list of books based on the
 ```
 ### Delete book:
 Method: DELETE
+
 URL: http://localhost:9005/api/v1/books/delete
 
 This HTTP DELETE request is used to delete a book by its ID. The request should include a JSON payload with the key "id" representing the ID of the book to be deleted.
@@ -190,6 +191,7 @@ This HTTP DELETE request is used to delete a book by its ID. The request should 
 
 ### Get book by ID:
 Method: GET
+
 URL: http://localhost:9005/api/v1/books/get?id=1
 
 This endpoint makes an HTTP GET request to retrieve information about a specific book identified by the provided ID. The response of this request can be documented as a JSON schema to describe the structure and data types of the returned book information.
@@ -214,6 +216,7 @@ This endpoint makes an HTTP GET request to retrieve information about a specific
 ## Authors
 ### Add new author:
 Method: POST
+
 URL: http://localhost:9005/api/v1/authors/store
 
 This endpoint is used to store author information.
@@ -247,6 +250,7 @@ This endpoint is used to store author information.
 
 ### Update author:
 Method: PUT
+
 URL: http://localhost:9005/api/v1/authors/update
 
 This endpoint allows the user to update the details of a book.
@@ -274,6 +278,7 @@ This endpoint allows the user to update the details of a book.
 
 ### Get all authors:
 Method: GET
+
 URL: http://localhost:9005/api/v1/authors/all?page=1&perPage=10
 
 This endpoint retrieves a list of authors with pagination support.
@@ -306,6 +311,7 @@ This endpoint retrieves a list of authors with pagination support.
 ```
 ### Delete author:
 Method: DELETE
+
 URL: http://localhost:9005/api/v1/authors/delete
 
 This endpoint is used to delete an author.
@@ -329,6 +335,7 @@ This endpoint is used to delete an author.
 
 ### Get author by ID:
 Method: GET
+
 URL: http://localhost:9005/api/v1/books/get?id=1
 
 The endpoint retrieves author information based on the provided ID.
@@ -361,6 +368,7 @@ The endpoint retrieves author information based on the provided ID.
 ## Book categories
 ### Add new author:
 Method: POST
+
 URL: http://localhost:9005/api/v1/book_categories/store
 
 This endpoint is used to store book category information.
@@ -398,6 +406,7 @@ This endpoint is used to store book category information.
 
 ### Update book category:
 Method: PUT
+
 URL: http://localhost:9005/api/v1/book_categories/update
 
 This endpoint is used to update book category details.
@@ -428,6 +437,7 @@ This endpoint is used to update book category details.
 
 ### Get all book categories:
 Method: GET
+
 URL: http://localhost:9005/api/v1/book_categories/all?page=1&perPage=10
 
 This endpoint retrieves a list of book categories with pagination support.
@@ -460,6 +470,7 @@ This endpoint retrieves a list of book categories with pagination support.
 ```
 ### Delete book category:
 Method: DELETE
+
 URL: http://localhost:9005/api/v1/book_categories/delete
 
 This endpoint is used to delete a book category.
@@ -483,6 +494,7 @@ This endpoint is used to delete a book category.
 
 ### Get book category by ID:
 Method: GET
+
 URL: http://localhost:9005/api/v1/book_categories/get?id=2
 
 The endpoint retrieves book category information based on the provided ID.
