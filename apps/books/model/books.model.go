@@ -11,17 +11,17 @@ import (
 )
 
 type BookModel struct {
-	ID          uint                      `gorm:"primaryKey" json:"id"`
-	Title       string                    `gorm:"not null;index;type:varchar(200)" json:"title"`
-	ISBN        string                    `gorm:"not null;unique;index;type:varchar(200)" json:"isbn"`
-	AuthorID    uint                      `gorm:"not null" json:"author_id"`
-	CategoryID  uint                      `gorm:"not null" json:"category_id"`
-	Author      author.AuthorModel        `json:"author"`
-	Category    bookCategory.BookCategory `json:"category"`
-	Description string                    `gorm:"not null;type:varchar(255)" json:"description"`
-	IsPublished *bool                     `gorm:"type:boolean;default:false;not null" json:"is_published"`
-	CreatedAt   time.Time                 `json:"created_at"`
-	UpdatedAt   time.Time                 `json:"updated_at"`
+	ID          uint                           `gorm:"primaryKey" json:"id"`
+	Title       string                         `gorm:"not null;index;type:varchar(200)" json:"title"`
+	ISBN        string                         `gorm:"not null;unique;index;type:varchar(200)" json:"isbn"`
+	AuthorID    uint                           `gorm:"not null" json:"author_id"`
+	CategoryID  uint                           `gorm:"not null" json:"category_id"`
+	Author      author.AuthorModel             `json:"author"`
+	Category    bookCategory.BookCategoryModel `json:"category"`
+	Description string                         `gorm:"not null;type:varchar(255)" json:"description"`
+	IsPublished *bool                          `gorm:"type:boolean;default:false;not null" json:"is_published"`
+	CreatedAt   time.Time                      `json:"created_at"`
+	UpdatedAt   time.Time                      `json:"updated_at"`
 }
 
 // Set table name (GORM)

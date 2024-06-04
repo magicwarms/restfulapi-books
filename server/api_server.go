@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"restfulapi-books/apps/authors"
+	"restfulapi-books/apps/book_categories"
 	"restfulapi-books/apps/books"
 	"restfulapi-books/apps/constants"
 	"restfulapi-books/apps/utils"
@@ -21,6 +22,7 @@ type APIServer struct {
 func NewAPIServer(
 	bookHandler *books.BookHandler,
 	authorHandler *authors.AuthorHandler,
+	bookCategoryHandler *book_categories.BookCategoryHandler,
 	logger utils.Logger,
 ) *APIServer {
 	echoApp := echo.New()
@@ -79,6 +81,13 @@ func NewAPIServer(
 	authorRoute.PUT("/update", authorHandler.UpdateAuthor)
 	authorRoute.DELETE("/delete", authorHandler.DeleteAuthor)
 
+	bookCategoryRoute := baseRoute.Group("/book_categories")
+	bookCategoryRoute.GET("/get", bookCategoryHandler.FindBookCategory)
+	bookCategoryRoute.POST("/store", bookCategoryHandler.AddBookCategory)
+	bookCategoryRoute.GET("/all", bookCategoryHandler.GetAllBookCategories)
+	bookCategoryRoute.PUT("/update", bookCategoryHandler.UpdateBookCategory)
+	bookCategoryRoute.DELETE("/delete", bookCategoryHandler.DeleteBookCategory)
+
 	return &APIServer{
 		httpServer: &http.Server{
 			Addr: "0.0.0.0:" + os.Getenv("PORT"),
@@ -92,9 +101,7 @@ func NewAPIServer(
 }
 
 func (s *APIServer) Start() error {
-
 	fmt.Println("⚡️ [" + os.Getenv("APPLICATION_ENV") + "] - " + os.Getenv("APP_NAME") + " IS RUNNING ON PORT - " + "http://localhost:" + os.Getenv("PORT"))
-
 	if err := s.httpServer.ListenAndServe(); err != http.ErrServerClosed {
 		return err
 	}
