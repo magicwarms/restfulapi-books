@@ -41,6 +41,10 @@ func AppResponse(ctx echo.Context, code int, data interface{}) error {
 			code = http.StatusNotFound
 		}
 
+		if strings.Contains(errMessage, "already exists") {
+			code = http.StatusConflict
+		}
+
 		response.Error = &ErrorDetail{
 			Code:    code,
 			Message: errMessage,

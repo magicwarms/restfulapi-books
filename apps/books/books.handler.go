@@ -127,11 +127,11 @@ func (book *BookHandler) DeleteBook(ctx echo.Context) error {
 		return utils.AppResponse(ctx, http.StatusUnprocessableEntity, validationErr.Message)
 	}
 
-	classData := book.bookService.DeleteBook(ctx, bookDTO)
+	bookData := book.bookService.DeleteBook(ctx, bookDTO)
 
-	if classData != nil && classData.Error() != "" {
-		return utils.AppResponse(ctx, http.StatusInternalServerError, classData.Error())
+	if bookData != nil && bookData.Error() != "" {
+		return utils.AppResponse(ctx, http.StatusInternalServerError, bookData.Error())
 	}
 
-	return utils.AppResponse(ctx, http.StatusOK, classData)
+	return utils.AppResponse(ctx, http.StatusOK, bookData)
 }
