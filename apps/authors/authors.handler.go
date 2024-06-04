@@ -10,11 +10,11 @@ import (
 )
 
 type AuthorHandler struct {
-	authorService *authorService
+	authorService *AuthorService
 }
 
 func NewAuthorHandler(
-	authorService *authorService,
+	authorService *AuthorService,
 ) *AuthorHandler {
 	return &AuthorHandler{
 		authorService: authorService,
@@ -71,6 +71,30 @@ func (author *AuthorHandler) GetAllAuthors(ctx echo.Context) error {
 	}
 
 	return utils.AppResponse(ctx, http.StatusOK, authors)
+}
+
+func (author *AuthorHandler) FindAuthor(ctx echo.Context) error {
+	AuthorID := ctx.QueryParam("id")
+	parseAuthorID, errParseAuthorID := strconv.Atoi(AuthorID)
+	if errParseAuthorID != nil {
+		return utils.AppResponse(ctx, http.StatusBadRequest, errParseAuthorID.Error())
+	}
+	// Load into separate struct for security
+	authorDTO := &entity.FindAuthorRequestDTO{
+		ID: uint(parseAuthorID),
+	}
+
+	validationErr := utils.ValidateFields(*authorDTO)
+	if validationErr != nil {
+		return utils.AppResponse(ctx, http.StatusUnprocessableEntity, validationErr.Message)
+	}
+
+	authorData, errGetAuthorData := author.authorService.FetchAuthorByID(ctx, authorDTO.ID)
+	if errGetAuthorData != nil {
+		return utils.AppResponse(ctx, http.StatusInternalServerError, errGetAuthorData)
+	}
+
+	return utils.AppResponse(ctx, http.StatusOK, authorData)
 }
 
 func (author *AuthorHandler) UpdateAuthor(ctx echo.Context) error {

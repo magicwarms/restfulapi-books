@@ -2,7 +2,9 @@ package books
 
 import (
 	"errors"
+	"fmt"
 	"math"
+	author "restfulapi-books/apps/authors"
 	"restfulapi-books/apps/books/entity"
 	"restfulapi-books/apps/books/model"
 	"restfulapi-books/apps/utils"
@@ -12,18 +14,21 @@ import (
 )
 
 type bookService struct {
-	bookRepo *bookRepository
-	logger   utils.Logger
+	bookRepo      *bookRepository
+	authorService *author.AuthorService
+	logger        utils.Logger
 }
 
 // NewService is used to create a single instance of the service
 func NewBookService(
 	bookRepo *bookRepository,
+	authorService *author.AuthorService,
 	logger utils.Logger,
 ) *bookService {
 	return &bookService{
-		bookRepo: bookRepo,
-		logger:   logger,
+		bookRepo:      bookRepo,
+		authorService: authorService,
+		logger:        logger,
 	}
 }
 
@@ -32,6 +37,15 @@ func (srv *bookService) CreateBook(ctx echo.Context, book *entity.AddBookequestD
 
 	// TODO
 	// check if author id exists
+	author, errAuthor := srv.authorService.FetchAuthorByID(ctx, book.AuthorID)
+	fmt.Println("SINI", author)
+	if errAuthor != nil && !errors.Is(errAuthor, gorm.ErrRecordNotFound) {
+		srv.logger.Error(ctx, "failed to get author data", utils.Fields{"error": errAuthor.Error()})
+		return &model.BookModel{}, errAuthor
+	}
+	if author.Name == "" {
+		return &model.BookModel{}, errors.New("author not found")
+	}
 	// check if category id exists
 
 	bookID, err := srv.bookRepo.StoreBook(&model.BookModel{

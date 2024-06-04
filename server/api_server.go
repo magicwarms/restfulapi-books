@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"restfulapi-books/apps/authors"
 	"restfulapi-books/apps/books"
 	"restfulapi-books/apps/constants"
 	"restfulapi-books/apps/utils"
@@ -19,6 +20,7 @@ type APIServer struct {
 
 func NewAPIServer(
 	bookHandler *books.BookHandler,
+	authorHandler *authors.AuthorHandler,
 	logger utils.Logger,
 ) *APIServer {
 	echoApp := echo.New()
@@ -64,11 +66,18 @@ func NewAPIServer(
 
 	// -----------------ROUTES----------------//
 	bookRoute := baseRoute.Group("/books")
-	// accountRoute.GET("/find", accountHandler.FindAccount)
+	bookRoute.GET("/get", bookHandler.FindBook)
 	bookRoute.POST("/store", bookHandler.AddBook)
 	bookRoute.GET("/all", bookHandler.GetAllBooks)
 	bookRoute.PUT("/update", bookHandler.UpdateBook)
 	bookRoute.DELETE("/delete", bookHandler.DeleteBook)
+
+	authorRoute := baseRoute.Group("/authors")
+	authorRoute.GET("/get", authorHandler.FindAuthor)
+	authorRoute.POST("/store", authorHandler.AddAuthor)
+	authorRoute.GET("/all", authorHandler.GetAllAuthors)
+	authorRoute.PUT("/update", authorHandler.UpdateAuthor)
+	authorRoute.DELETE("/delete", authorHandler.DeleteAuthor)
 
 	return &APIServer{
 		httpServer: &http.Server{

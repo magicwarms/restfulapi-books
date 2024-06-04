@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type authorService struct {
+type AuthorService struct {
 	authorRepo *authorRepository
 	logger     utils.Logger
 }
@@ -20,14 +20,14 @@ type authorService struct {
 func NewAuthorService(
 	authorRepo *authorRepository,
 	logger utils.Logger,
-) *authorService {
-	return &authorService{
+) *AuthorService {
+	return &AuthorService{
 		authorRepo: authorRepo,
 		logger:     logger,
 	}
 }
 
-func (srv *authorService) CreateAuthor(ctx echo.Context, author *entity.AddAuthorRequestDTO) (*model.AuthorModel, error) {
+func (srv *AuthorService) CreateAuthor(ctx echo.Context, author *entity.AddAuthorRequestDTO) (*model.AuthorModel, error) {
 	var authorID uint
 
 	authorData, errAuthorData := srv.authorRepo.GetAuthorByEmail(author.Email)
@@ -58,7 +58,7 @@ func (srv *authorService) CreateAuthor(ctx echo.Context, author *entity.AddAutho
 	return newAuthor, nil
 }
 
-func (srv *authorService) FetchAuthorByID(ctx echo.Context, authorID uint) (*model.AuthorModel, error) {
+func (srv *AuthorService) FetchAuthorByID(ctx echo.Context, authorID uint) (*model.AuthorModel, error) {
 	author, errGetAuthor := srv.authorRepo.GetAuthorByID(authorID)
 	if errGetAuthor != nil {
 		if errors.Is(errGetAuthor, gorm.ErrRecordNotFound) {
@@ -69,7 +69,7 @@ func (srv *authorService) FetchAuthorByID(ctx echo.Context, authorID uint) (*mod
 	return author, nil
 }
 
-func (srv *authorService) FetchAllAuthors(ctx echo.Context, page, perPage int) (*entity.AuthorResponse, error) {
+func (srv *AuthorService) FetchAllAuthors(ctx echo.Context, page, perPage int) (*entity.AuthorResponse, error) {
 	var totalPage int64 = 1
 
 	authors, errAuthors := srv.authorRepo.GetAllAuthors(page, perPage)
@@ -95,7 +95,7 @@ func (srv *authorService) FetchAllAuthors(ctx echo.Context, page, perPage int) (
 	}, nil
 }
 
-func (srv *authorService) ModifyAuthor(ctx echo.Context, author *entity.UpdateAuthorRequestDTO) error {
+func (srv *AuthorService) ModifyAuthor(ctx echo.Context, author *entity.UpdateAuthorRequestDTO) error {
 	authorData, _ := srv.FetchAuthorByID(ctx, author.ID)
 	if authorData.Email == "" {
 		return errors.New("author not found")
@@ -114,7 +114,7 @@ func (srv *authorService) ModifyAuthor(ctx echo.Context, author *entity.UpdateAu
 	return nil
 }
 
-func (srv *authorService) DeleteAuthor(ctx echo.Context, author *entity.FindAuthorRequestDTO) error {
+func (srv *AuthorService) DeleteAuthor(ctx echo.Context, author *entity.FindAuthorRequestDTO) error {
 	result := srv.authorRepo.DeleteAuthor(author.ID)
 	if result != nil {
 		srv.logger.Error(ctx, "failed to delete author", utils.Fields{"error": result.Error})
